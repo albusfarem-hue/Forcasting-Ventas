@@ -1,8 +1,35 @@
-# Archivo principal para la app de Streamlit
-import streamlit as st
+# ==============================
+# 🔎 BLOQUE DE DIAGNÓSTICO
+# ==============================
 
-st.title('App de Machine Learning - Forcasting Ventas')
-st.write('Bienvenido a la aplicación de predicción de ventas.')
+import sys
+import subprocess
+import pathlib
+
+print("=== STARTUP DIAGNOSTICS ===")
+print("PYTHON VERSION:", sys.version)
+
+print("\n--- PIP VERSION ---")
+subprocess.run([sys.executable, "-m", "pip", "--version"], check=False)
+
+print("\n--- INSTALLED PACKAGES (pip freeze) ---")
+subprocess.run([sys.executable, "-m", "pip", "freeze"], check=False)
+
+print("\n--- REQUIREMENTS FILE CHECK ---")
+req_path = pathlib.Path("requirements.txt")
+print("requirements.txt exists:", req_path.exists())
+
+if req_path.exists():
+    content = req_path.read_text(encoding="utf-8", errors="replace")
+    print("requirements.txt content:\n")
+    print(content)
+
+print("=== END STARTUP DIAGNOSTICS ===\n")
+
+
+# ==============================
+# 🚀 INICIO REAL DE LA APP
+# ==============================
 
 import streamlit as st
 import pandas as pd
@@ -12,6 +39,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime
 
+
 # Configuración de la página
 st.set_page_config(
     page_title="Simulador de Ventas - Noviembre 2025",
@@ -19,6 +47,10 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded"
 )
+
+# Título principal
+st.title("App de Machine Learning - Forecasting Ventas")
+st.write("Bienvenido a la aplicación de predicción de ventas.")
 
 # Estilos CSS personalizados
 st.markdown("""
