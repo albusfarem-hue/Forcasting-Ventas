@@ -1,0 +1,10 @@
+# Requisitos para el proyecto de Machine Learning
+pandas
+numpy
+scikit-learn
+streamlit
+matplotlib
+seaborn
+#jupyter
+joblib 
+altair>=5
