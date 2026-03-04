@@ -84,6 +84,8 @@ This approach transforms the machine learning model into a decision-support tool
 -Matplotlib  
 -Seaborn  
 
+
+```markdown
 ## Repository Structure
 ```text
 forecasting-ventas
