@@ -76,18 +76,16 @@ This approach transforms the machine learning model into a decision-support tool
 
 ## Technologies Used
 
--Python  
--Pandas  
--NumPy  
--Scikit-learn  
--Streamlit  
--Matplotlib  
--Seaborn  
+- Python  
+- Pandas  
+- NumPy  
+- Scikit-learn  
+- Streamlit  
+- Matplotlib  
+- Seaborn  
 
-
-```markdown
 ## Repository Structure
-
+```markdown
 forecasting-ventas
 │
 ├── data
