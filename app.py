@@ -2,6 +2,7 @@
 # 🚀 INICIO REAL DE LA APP
 # ==============================
 
+from pathlib import Path
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -10,18 +11,29 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime
 
+# Rutas absolutas basadas en la ubicación real de app.py
+BASE_DIR = Path(__file__).resolve().parent
+MODEL_PATH = BASE_DIR / "models" / "modelo_final.joblib"
+DATA_PATH  = BASE_DIR / "data" / "processed" / "inferencia_df_transformado.csv"
 
 # Configuración de la página
 st.set_page_config(
     page_title="Simulador de Ventas - Noviembre 2025",
-    page_icon="📊",
+    page_icon="📈",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Título principal
 st.title("App de Machine Learning - Forecasting Ventas")
 st.write("Bienvenido a la aplicación de predicción de ventas.")
+
+# Diagnóstico rápido (opcional pero útil)
+st.write("MODEL_PATH:", str(MODEL_PATH))
+st.write("DATA_PATH:", str(DATA_PATH))
+
+# Carga segura
+modelo = joblib.load(MODEL_PATH)
+inferencia_df = pd.read_csv(DATA_PATH)
 
 # Estilos CSS personalizados
 st.markdown("""
