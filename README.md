@@ -120,7 +120,17 @@ forecasting-ventas
 ├── requirements.txt
 └── README.md
 ```
+## Project Architecture
 
+The project follows a typical applied machine learning workflow:
+
+Data exploration and feature engineering were developed in Jupyter notebooks.
+
+The trained model was exported and stored as a serialized file in the models directory.
+
+The Streamlit application loads the trained model and performs predictions to simulate business scenarios in real time.
+
+This separation allows experimentation, model training, and deployment to remain modular.
 
 ## Future Improvements
 
