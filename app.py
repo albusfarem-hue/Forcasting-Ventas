@@ -81,16 +81,17 @@ st.markdown("""
 @st.cache_resource
 def cargar_modelo():
     try:
-        modelo = joblib.load('../models/modelo_final.joblib')
+        with open(str(BASE_DIR / "models" / "modelo_final.pkl"), 'rb') as f:
+            modelo = cloudpickle.load(f)
         return modelo
     except Exception as e:
-        st.error(f"❌ Error al cargar el modelo: {e}")
+        st.error(f"Error al cargar el modelo: {e}")
         return None
 
 @st.cache_data
 def cargar_datos():
     try:
-        df = pd.read_csv('../data/processed/inferencia_df_transformado.csv')
+        df = pd.read_csv(str(DATA_PATH))
         df['fecha'] = pd.to_datetime(df['fecha'])
         
         # Calcular precio_competencia si no existe
@@ -100,7 +101,7 @@ def cargar_datos():
         
         return df
     except Exception as e:
-        st.error(f"❌ Error al cargar los datos: {e}")
+        st.error(f"Error al cargar los datos: {e}")
         return None
 
 # Función para actualizar variables dependientes
