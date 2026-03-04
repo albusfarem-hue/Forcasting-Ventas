@@ -65,6 +65,18 @@ The model was evaluated using the following metrics:
 
 These metrics provide insight into prediction accuracy and model stability.
 
+## Key Insights
+
+The forecasting model allows simulation of business scenarios such as discount changes and competitive pressure.
+
+Key insights from the model include:
+
+- Promotional discounts significantly increase predicted sales volume.
+- Competitive pressure can reduce demand even when discounts are applied.
+- Certain periods, such as promotional events (e.g., Black Friday), show strong demand spikes.
+
+These insights demonstrate how machine learning models can support retail decision-making by forecasting demand under different strategic scenarios.
+
 ## Interactive Application
 
 The project includes an interactive web application developed with Streamlit that allows users to simulate business scenarios.
