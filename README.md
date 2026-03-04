@@ -87,7 +87,7 @@ This approach transforms the machine learning model into a decision-support tool
 
 ```markdown
 ## Repository Structure
-```text
+
 forecasting-ventas
 │
 ├── data
