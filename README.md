@@ -103,7 +103,6 @@ forecasting-ventas
 │
 ├── requirements.txt
 └── README.md
-...
 
 
 
@@ -120,4 +119,4 @@ Jorge Antonio Medina Trujillo
 
 Data Analyst | Machine Learning Enthusiast | Literature Researcher transitioning into Data Science
 
-LinkedIn: www.linkedin.com/in/jorge-medina-analytics 
+LinkedIn: https://www.linkedin.com/in/jorge-medina-analytics
