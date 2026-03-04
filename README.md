@@ -129,6 +129,10 @@ forecasting-ventas
 - Deploy the application in the cloud
 - Integrate real-time data pipelines
 
+## Acknowledgments
+
+This project was developed as part of the Data Science for Business training program. The course focused on applying data science techniques to real business problems, covering the full workflow from problem definition and data exploration to machine learning modeling and deployment.
+
 ## Author
 
 Jorge Antonio Medina Trujillo
