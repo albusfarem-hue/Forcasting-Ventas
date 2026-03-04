@@ -105,7 +105,7 @@ forecasting-ventas
 │
 ├── requirements.txt
 └── README.md
-
+```
 
 
 ## Future Improvements
