@@ -10,6 +10,7 @@ import cloudpickle
 import json
 import matplotlib.pyplot as plt
 from datetime import datetime
+from sklearn.ensemble import HistGradientBoostingRegressor
 
 try:
     import seaborn as sns
@@ -21,6 +22,7 @@ BASE_DIR = Path(__file__).resolve().parent
 MODEL_PATH = BASE_DIR / "models" / "modelo_final.pkl"
 METADATA_PATH = BASE_DIR / "models" / "modelo_metadata.json"
 DATA_PATH  = BASE_DIR / "data" / "processed" / "inferencia_df_transformado.csv"
+TRAIN_DATA_PATH = BASE_DIR / "data" / "processed" / "df.csv"
 
 # Configuración de la página
 st.set_page_config(
@@ -36,14 +38,6 @@ st.write("Bienvenido a la aplicación de predicción de ventas.")
 # Diagnóstico rápido (opcional pero útil)
 st.write("MODEL_PATH:", str(MODEL_PATH))
 st.write("DATA_PATH:", str(DATA_PATH))
-
-# Carga segura con cloudpickle
-with open(MODEL_PATH, 'rb') as f:
-    modelo = cloudpickle.load(f)
-with open(METADATA_PATH, 'r') as f:
-    model_metadata = json.load(f)
-feature_names = model_metadata['feature_names']
-inferencia_df = pd.read_csv(DATA_PATH)
 
 # Estilos CSS personalizados
 st.markdown("""
@@ -84,10 +78,52 @@ st.markdown("""
 # Cargar modelo y datos
 @st.cache_resource
 def cargar_modelo():
+    def entrenar_modelo_fallback():
+        df_train = pd.read_csv(str(TRAIN_DATA_PATH))
+        exclude_cols = [
+            'fecha', 'unidades_vendidas', 'producto_id', 'nombre',
+            'categoria', 'subcategoria', 'nombre_dia_semana', 'dia_semana_es'
+        ]
+        columnas_modelo_local = [
+            col for col in df_train.columns
+            if col not in exclude_cols and df_train[col].dtype != 'object'
+        ]
+        X_train = df_train[columnas_modelo_local].astype(np.float32)
+        y_train = df_train['unidades_vendidas'].astype(np.float32)
+
+        modelo_local = HistGradientBoostingRegressor(
+            max_iter=50,
+            learning_rate=0.1,
+            max_depth=5,
+            random_state=42,
+            warm_start=False
+        )
+        modelo_local.fit(X_train, y_train)
+
+        with open(str(MODEL_PATH), 'wb') as f:
+            cloudpickle.dump(modelo_local, f)
+
+        metadata = {
+            'feature_names': columnas_modelo_local,
+            'n_features': len(columnas_modelo_local),
+            'modelo_type': 'HistGradientBoostingRegressor'
+        }
+        with open(str(METADATA_PATH), 'w', encoding='utf-8') as f:
+            json.dump(metadata, f)
+
+        return modelo_local
+
     try:
         with open(str(BASE_DIR / "models" / "modelo_final.pkl"), 'rb') as f:
             modelo = cloudpickle.load(f)
         return modelo
+    except ModuleNotFoundError:
+        st.warning("Modelo incompatible con el entorno actual. Reentrenando automáticamente...")
+        try:
+            return entrenar_modelo_fallback()
+        except Exception as e:
+            st.error(f"Error reentrenando modelo fallback: {e}")
+            return None
     except Exception as e:
         st.error(f"Error al cargar el modelo: {e}")
         return None
