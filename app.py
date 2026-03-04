@@ -35,10 +35,6 @@ st.set_page_config(
 st.title("App de Machine Learning - Forecasting Ventas")
 st.write("Bienvenido a la aplicación de predicción de ventas.")
 
-# Diagnóstico rápido (opcional pero útil)
-st.write("MODEL_PATH:", str(MODEL_PATH))
-st.write("DATA_PATH:", str(DATA_PATH))
-
 # Estilos CSS personalizados
 st.markdown("""
     <style>
@@ -118,7 +114,6 @@ def cargar_modelo():
             modelo = cloudpickle.load(f)
         return modelo
     except ModuleNotFoundError:
-        st.warning("Modelo incompatible con el entorno actual. Reentrenando automáticamente...")
         try:
             return entrenar_modelo_fallback()
         except Exception as e:
@@ -256,9 +251,10 @@ descuento = st.sidebar.slider(
 # Selector de escenario de competencia
 st.sidebar.markdown("### 🏪 Escenario de Competencia")
 escenario = st.sidebar.radio(
-    "",
+    "Selecciona un escenario",
     ["Actual (0%)", "Competencia -5%", "Competencia +5%"],
     index=0,
+    label_visibility="collapsed",
     help="Simula cambios en los precios de la competencia"
 )
 
@@ -353,7 +349,7 @@ if simular:
             
             ax.axvline(x=bf_dia, color='red', linestyle='--', linewidth=2, alpha=0.7)
             ax.plot(bf_dia, bf_ventas, 'ro', markersize=12, zorder=5)
-            ax.annotate('🛍️ Black Friday', 
+            ax.annotate('Black Friday', 
                        xy=(bf_dia, bf_ventas),
                        xytext=(bf_dia - 3, bf_ventas * 1.15),
                        fontsize=12,
