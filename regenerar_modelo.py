@@ -1,54 +1,54 @@
 """
-Script para regenerar el modelo con compatibilidad de versiones
+Script para regenerar el modelo sin problemas de compatibilidad NumPy
 """
 import pandas as pd
 import numpy as np
 import joblib
+import pickle
 from sklearn.ensemble import HistGradientBoostingRegressor
 from pathlib import Path
+import warnings
+warnings.filterwarnings('ignore')
 
-# Configuración
 BASE_DIR = Path(__file__).resolve().parent
 DATA_PATH = BASE_DIR / "data" / "processed" / "df.csv"
-MODEL_PATH = BASE_DIR / "models" / "modelo_final.joblib"
+MODEL_PATH = BASE_DIR / "models" / "modelo_final.pkl"
 
-print("🔄 Regenerando modelo...")
-print(f"Cargando datos desde: {DATA_PATH}")
-
-# Cargar datos
+print("[*] Cargando datos...")
 df = pd.read_csv(DATA_PATH)
-print(f"✅ Datos cargados: {df.shape}")
+print(f"[OK] Datos cargados: {df.shape}")
 
-# Definir columnas de features (basadas en las del notebook)
-X_cols = [col for col in df.columns if col not in ['fecha', 'unidades_vendidas']]
-X = df[X_cols]
-y = df['unidades_vendidas']
+# Excluir columnas no numéricas
+exclude_cols = ['fecha', 'unidades_vendidas', 'producto_id', 'nombre', 'categoria', 'subcategoria', 'nombre_dia_semana', 'dia_semana_es']
+X_cols = [col for col in df.columns if col not in exclude_cols and df[col].dtype != 'object']
+X = df[X_cols].astype(np.float32)
+y = df['unidades_vendidas'].astype(np.float32)
 
-print(f"✅ Features preparadas: {X.shape}")
-print(f"✅ Target preparado: {y.shape}")
+print(f"[OK] Features: {X.shape}")
+print(f"[OK] Target: {y.shape}")
 
-# Entrenar modelo simple (puede ser más rápido que el original)
-print("🤖 Entrenando modelo...")
+print("[*] Entrenando modelo...")
+np.random.seed(42)
 model = HistGradientBoostingRegressor(
-    max_iter=100,
+    max_iter=50,
     learning_rate=0.1,
     max_depth=5,
     random_state=42,
-    n_iter_no_change=10,
-    validation_fraction=0.1
+    warm_start=False
 )
 
 model.fit(X, y)
-print("✅ Modelo entrenado")
+print("[OK] Modelo entrenado")
 
-# Guardar con protocolo compatible
-print(f"💾 Guardando modelo en: {MODEL_PATH}")
-joblib.dump(model, MODEL_PATH, protocol=4, compress=3)
-print("✅ Modelo guardado exitosamente")
+# Guardar con pickle en lugar de joblib para evitar problemas de NumPy
+print(f"[*] Guardando modelo en: {MODEL_PATH}")
+with open(MODEL_PATH, 'wb') as f:
+    pickle.dump(model, f, protocol=4)
+print("[OK] Modelo guardado")
 
 # Verificar que se puede cargar
-print("🔍 Verificando que el modelo se puede cargar...")
-modelo_prueba = joblib.load(MODEL_PATH)
-print("✅ Modelo cargado correctamente")
-
-print("\n¡✨ Regeneración completada!")
+print("[*] Verificando carga...")
+with open(MODEL_PATH, 'rb') as f:
+    test_model = pickle.load(f)
+print("[OK] Modelo cargado exitosamente")
+print("[OK] Completado!")

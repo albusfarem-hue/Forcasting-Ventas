@@ -6,14 +6,14 @@ from pathlib import Path
 import streamlit as st
 import pandas as pd
 import numpy as np
-import joblib
+import pickle
 import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime
 
 # Rutas absolutas basadas en la ubicación real de app.py
 BASE_DIR = Path(__file__).resolve().parent
-MODEL_PATH = BASE_DIR / "models" / "modelo_final.joblib"
+MODEL_PATH = BASE_DIR / "models" / "modelo_final.pkl"
 DATA_PATH  = BASE_DIR / "data" / "processed" / "inferencia_df_transformado.csv"
 
 # Configuración de la página
@@ -31,8 +31,9 @@ st.write("Bienvenido a la aplicación de predicción de ventas.")
 st.write("MODEL_PATH:", str(MODEL_PATH))
 st.write("DATA_PATH:", str(DATA_PATH))
 
-# Carga segura
-modelo = joblib.load(MODEL_PATH)
+# Carga segura con pickle
+with open(MODEL_PATH, 'rb') as f:
+    modelo = pickle.load(f)
 inferencia_df = pd.read_csv(DATA_PATH)
 
 # Estilos CSS personalizados
