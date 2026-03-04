@@ -1,4 +1,4 @@
-# Machine Learning Sales Forecasting App (Streamlit)
+# Retail Sales Forecasting with Machine Learning (Streamlit App)
 **Live app:** https://forcasting-ventas-d5kr6phd9ptbqfdaorp3w4.streamlit.app/
 
 Interactive app to forecast retail sales and simulate scenarios (discount and competition) using Machine Learning and Streamlit.
