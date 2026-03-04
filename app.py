@@ -8,9 +8,13 @@ import pandas as pd
 import numpy as np
 import cloudpickle
 import json
-import seaborn as sns
 import matplotlib.pyplot as plt
 from datetime import datetime
+
+try:
+    import seaborn as sns
+except ImportError:
+    sns = None
 
 # Rutas absolutas basadas en la ubicación real de app.py
 BASE_DIR = Path(__file__).resolve().parent
@@ -293,7 +297,10 @@ if simular:
         st.markdown("## 📅 Predicción de Ventas Diarias")
         
         fig, ax = plt.subplots(figsize=(14, 6))
-        sns.set_style("whitegrid")
+        if sns is not None:
+            sns.set_style("whitegrid")
+        else:
+            plt.style.use("seaborn-v0_8-whitegrid")
         
         # Gráfico de línea principal
         dias = df_resultados['dia_mes'].values
