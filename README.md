@@ -15,15 +15,11 @@ The application allows users to modify variables such as discount levels and com
 
 The project replicates a real-world business case in the retail sector, integrating data preparation, machine learning modeling, and interactive deployment.
 
-## Business Problem
+## Business Use Case
 
-Retail companies must anticipate demand to optimize inventory, pricing strategies, and promotional campaigns.
+Retail companies frequently need to anticipate how promotions, pricing strategies, and competitive pressure affect product demand.
 
-This project builds a predictive model capable of forecasting sales while allowing decision-makers to simulate business scenarios such as:
-
-- Discount adjustments
-- Competitive pressure
-- Product-level demand changes
+This application illustrates how machine learning forecasting models can be used to simulate potential sales scenarios and support decision-making in retail planning.
 
 ## Project Workflow
 
